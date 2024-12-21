@@ -1,0 +1,26 @@
+{
+  "name": "douyu-stream-notice",
+  "version": "1.0.0",
+  "description": "斗鱼自动开播提醒",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qianjiachun/douyu-stream-notice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qianjiachun/douyu-stream-notice/issues"
+  },
+  "homepage": "https://github.com/qianjiachun/douyu-stream-notice#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "ws": "^8.18.0"
+  }
+}
