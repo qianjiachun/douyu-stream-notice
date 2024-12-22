@@ -9,12 +9,12 @@ const options = [
     rid: "4042402",
     qq: {
       // Q群
-      groupIds: ["196306551"]
+      groupIds: ["600072388"]
     }
   }
 ];
 const lastNoticeTimeMap = getLocalLastNoticeTime(); // 上一次通知时间
-const noticeInterval = 0 * 3600000; // 6小时
+const noticeInterval = 6 * 3600000; // 6小时
 
 async function main() {
   for (const item of options) {
@@ -23,8 +23,9 @@ async function main() {
       if (type !== "rss") return;
       const rid = getStrMiddle(msg, "rid@=", "/");
       const ss = getStrMiddle(msg, "ss@=", "/");
+      const ivl = getStrMiddle(msg, "ivl@=", "/"); // ivl为1则表示是轮播内容
       console.log("【开播消息】", item.rid, msg);
-      if (ss == "1") {
+      if (ss == "1" && ivl == "0") {
         // 开播了
         // 获取上次通知时间，如果时间间隔小于noticeInterval，则不通知
         const lastNoticeTime = lastNoticeTimeMap[rid];
@@ -33,7 +34,8 @@ async function main() {
         for (const groupId of item.qq.groupIds) {
           const ret = await sendQQGroupMessage({
             groupId: groupId,
-            text: `【开播提醒测试消息】${title}`
+            text: `开播！${title}`,
+            atAll: true
           }).catch(err => console.log(err));
           console.log("【通知结果】", ret);
         }
