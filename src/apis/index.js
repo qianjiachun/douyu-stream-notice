@@ -17,18 +17,27 @@ export async function getRoomTitle(rid) {
   });
 }
 
+export async function getPocketList(rid) {
+  // 获取直播间信息
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`https://www.douyu.com/japi/interact/cdn/pocket/effective?rid=${rid}`)
+      .then(res => {
+        if (!res.data) return resolve([]);
+        resolve(res.data.list);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
 export function sendQQGroupMessage(options) {
   // 发送qq群消息，atAll为true时，会在最后艾特全体
   const { groupId, text, atAll } = options;
   const data = {
     group_id: groupId,
     message: [
-      {
-        type: "text",
-        data: {
-          text: `${text}${atAll ? " " : ""}`
-        }
-      },
       ...(atAll
         ? [
             {
@@ -38,7 +47,13 @@ export function sendQQGroupMessage(options) {
               }
             }
           ]
-        : [])
+        : []),
+      {
+        type: "text",
+        data: {
+          text: `${atAll ? " " : ""}${text}`
+        }
+      }
     ]
   };
   // 拼接api的url，自动识别最后有没有/

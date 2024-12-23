@@ -1,4 +1,4 @@
-import { getRoomTitle, sendQQGroupMessage } from "./apis/index.js";
+import { getRoomTitle, sendQQGroupMessage, getPocketList } from "./apis/index.js";
 import { Ex_WebSocket_UnLogin } from "./utils/libs/websocket.js";
 import { getStrMiddle } from "./utils/index.js";
 import fs from "fs";
@@ -7,6 +7,7 @@ const wsList = [];
 const options = [
   {
     rid: "4042402",
+    content: "开播了！",
     qq: {
       // Q群
       groupIds: ["600072388"]
@@ -31,10 +32,18 @@ async function main() {
         const lastNoticeTime = lastNoticeTimeMap[rid];
         if (lastNoticeTime && new Date().getTime() - lastNoticeTime < noticeInterval) return;
         const title = await getRoomTitle(rid);
+        const pocketList = await getPocketList(rid);
+
+        let pocketText = "";
+        for (const pocket of pocketList) {
+          if (pocket.name.includes("流量")) continue;
+          pocketText += `- ${pocket.name}\n`;
+        }
+
         for (const groupId of item.qq.groupIds) {
           const ret = await sendQQGroupMessage({
             groupId: groupId,
-            text: `开播！${title}`,
+            text: `${item.content}${title}\n\n${pocketText}`,
             atAll: true
           }).catch(err => console.log(err));
           console.log("【通知结果】", ret);
