@@ -43,7 +43,7 @@ async function main() {
         for (const groupId of item.qq.groupIds) {
           const ret = await sendQQGroupMessage({
             groupId: groupId,
-            text: `${item.content}${title}\n\n${pocketText}`,
+            text: `${item.content}${title}\n\n主播口袋：\n${pocketText}`,
             atAll: true
           }).catch(err => console.log(err));
           console.log("【通知结果】", ret);
