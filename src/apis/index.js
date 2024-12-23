@@ -24,7 +24,7 @@ export async function getPocketList(rid) {
       .get(`https://www.douyu.com/japi/interact/cdn/pocket/effective?rid=${rid}`)
       .then(res => {
         if (!res.data) return resolve([]);
-        resolve(res.data.list);
+        resolve(res.data.data.list);
       })
       .catch(err => {
         reject(err);
