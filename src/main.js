@@ -12,6 +12,13 @@ const options = [
       // Q群
       groupIds: ["600072388"]
     }
+  },
+  {
+    rid: "5132174",
+    content: "来了来了！",
+    qq: {
+      groupIds: ["795483296"]
+    }
   }
 ];
 const lastNoticeTimeMap = getLocalLastNoticeTime(); // 上一次通知时间
@@ -34,16 +41,12 @@ async function main() {
         const title = await getRoomTitle(rid);
         const pocketList = await getPocketList(rid);
 
-        let pocketText = "";
-        for (const pocket of pocketList) {
-          if (pocket.name.includes("流量")) continue;
-          pocketText += `- ${pocket.name}\n`;
-        }
+        let pocketText = pocketList.filter(pocket => !pocket.name.includes("流量")).map(item => item.name).join("、");
 
         for (const groupId of item.qq.groupIds) {
           const ret = await sendQQGroupMessage({
             groupId: groupId,
-            text: `${item.content}${title}\n\n主播口袋：\n${pocketText}`,
+            text: `${item.content}${title}${pocketText !== "" ? "\n\n当前生效道具：" : ""}${pocketText}`,
             atAll: true
           }).catch(err => console.log(err));
           console.log("【通知结果】", ret);
