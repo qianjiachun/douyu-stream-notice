@@ -22,7 +22,7 @@ const options = [
   }
 ];
 const lastNoticeTimeMap = getLocalLastNoticeTime(); // 上一次通知时间
-const noticeInterval = 6 * 3600000; // 6小时
+const noticeInterval = 1 * 3600000; // 6小时
 
 async function main() {
   for (const item of options) {
