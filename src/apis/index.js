@@ -7,11 +7,11 @@ export async function getRoomTitle(rid) {
   return new Promise((resolve, reject) => {
     axios
       .get(`https://www.douyu.com/betard/${rid}`)
-      .then(res => {
+      .then((res) => {
         if (!res.data) return resolve("");
         resolve(res.data.room.room_name);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -22,11 +22,11 @@ export async function getPocketList(rid) {
   return new Promise((resolve, reject) => {
     axios
       .get(`https://www.douyu.com/japi/interact/cdn/pocket/effective?rid=${rid}`)
-      .then(res => {
+      .then((res) => {
         if (!res.data) return resolve([]);
         resolve(res.data.data.list);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
@@ -58,14 +58,18 @@ export function sendQQGroupMessage(options) {
   };
   // 拼接api的url，自动识别最后有没有/
   const apiUrl = process.env.API_URL_QQ.replace(/\/$/, "");
-  
+  // 请求头配置
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer 2ewjm652k5te83e4bmh7"
+  };
   return new Promise((resolve, reject) => {
     axios
-      .post(`${apiUrl}/send_group_msg`, data)
-      .then(res => {
+      .post(`${apiUrl}/send_group_msg`, data, headers)
+      .then((res) => {
         resolve(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
